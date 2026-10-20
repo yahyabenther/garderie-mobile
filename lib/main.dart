@@ -1,120 +1,242 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MaGarderieApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MaGarderieApp extends StatelessWidget {
+  const MaGarderieApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Ma Garderie',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        primarySwatch: Colors.pink,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const SplashScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Timer(const Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
+      backgroundColor: Colors.pink[50],
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: .center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            const Icon(Icons.child_care, size: 100, color: Colors.pinkAccent),
+            const SizedBox(height: 20),
+            const Text(
+              'Ma Garderie',
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                color: Colors.pink,
+              ),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  List<Map<String, dynamic>> activites = [
+    {
+      "id": 1,
+      "titre": "Dessin et coloriage",
+      "description": "Développement de la créativité",
+      "icone": "🎨"
+    },
+    {
+      "id": 2,
+      "titre": "Jeux éducatifs",
+      "description": "Apprentissage par le jeu",
+      "icone": "🧩"
+    },
+    {
+      "id": 3,
+      "titre": "Musique et chansons",
+      "description": "Éveil musical des enfants",
+      "icone": "🎵"
+    },
+    {
+      "id": 4,
+      "titre": "Lecture de contes",
+      "description": "Découverte des histoires",
+      "icone": "📚"
+    },
+    {
+      "id": 5,
+      "titre": "Activités sportives",
+      "description": "Développement de la motricité",
+      "icone": "⚽"
+    }
+  ];
+
+  String _selectedDrawerItem = 'Accueil';
+
+  void _showAddActivityDialog() {
+    final titleController = TextEditingController();
+    final descriptionController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Nouvelle activité'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: titleController,
+                decoration: const InputDecoration(labelText: 'Titre de l\'activité'),
+              ),
+              TextField(
+                controller: descriptionController,
+                decoration: const InputDecoration(labelText: 'Description'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Annuler'),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.pinkAccent),
+              onPressed: () {
+                if (titleController.text.isNotEmpty) {
+                  setState(() {
+                    activites.add({
+                      "id": activites.length + 1,
+                      "titre": titleController.text,
+                      "description": descriptionController.text.isNotEmpty
+                          ? descriptionController.text
+                          : 'Nouvelle activité de garderie',
+                      "icone": "⭐",
+                    });
+                  });
+                  Navigator.pop(context);
+                }
+              },
+              child: const Text('Ajouter'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Ma Garderie'),
+        backgroundColor: Colors.pinkAccent,
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(color: Colors.pinkAccent),
+              child: Text(
+                'Menu Ma Garderie',
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text('Accueil'),
+              selected: _selectedDrawerItem == 'Accueil',
+              onTap: () {
+                setState(() => _selectedDrawerItem = 'Accueil');
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.list),
+              title: const Text('Activités'),
+              selected: _selectedDrawerItem == 'Activités',
+              onTap: () {
+                setState(() => _selectedDrawerItem == 'Activités');
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.info),
+              title: const Text('À propos'),
+              selected: _selectedDrawerItem == 'À propos',
+              onTap: () {
+                setState(() => _selectedDrawerItem = 'À propos');
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+      body: ListView.builder(
+        itemCount: activites.length,
+        itemBuilder: (context, index) {
+          final activite = activites[index];
+          return Card(
+            margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            elevation: 3,
+            child: ListTile(
+              leading: Text(
+                activite['icone'],
+                style: const TextStyle(fontSize: 30),
+              ),
+              title: Text(
+                activite['titre'],
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(activite['description']),
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(activite['titre'])),
+                );
+              },
+            ),
+          );
+        },
+      ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        onPressed: _showAddActivityDialog,
+        backgroundColor: Colors.pinkAccent,
         child: const Icon(Icons.add),
       ),
     );
